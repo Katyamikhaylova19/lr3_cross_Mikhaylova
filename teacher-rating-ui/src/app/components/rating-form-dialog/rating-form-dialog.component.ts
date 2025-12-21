@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Rating } from 'src/app/models/rating.model';
-import { Teacher } from 'src/app/models/teacher.model';
-import { Student } from 'src/app/models/student.model';
+import { Rating } from '../../models/rating.model';
+import { Student } from '../../models/student.model';
+import { Teacher } from '../../models/teacher.model';
 
 @Component({
   selector: 'app-rating-form-dialog',

@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Rating } from 'src/app/models/rating.model';
-import { RatingService } from 'src/app/services/rating.service';
 import { ToastrService } from 'ngx-toastr';
+import { Rating } from '../../models/rating.model';
+import { RatingService } from '../../services/rating.service';
+import { MatToolbar } from "@angular/material/toolbar";
+import { MatIcon } from "@angular/material/icon";
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from "@angular/material/card";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-rating-detail',
   templateUrl: './rating-detail.component.html',
-  styleUrls: ['./rating-detail.component.css']
+  styleUrls: ['./rating-detail.component.css'],
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent, MatProgressSpinner]
 })
 export class RatingDetailComponent implements OnInit {
   rating: Rating | null = null;
@@ -29,7 +34,7 @@ export class RatingDetailComponent implements OnInit {
   loadRating(id: number): void {
     this.isLoading = true;
     this.ratingService.getRatingById(id).subscribe({
-      next: (rating) => {
+      next: (rating: any) => {
         this.rating = rating;
         this.isLoading = false;
       },

@@ -3,16 +3,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { Rating } from 'src/app/models/rating.model';
-import { Teacher } from 'src/app/models/teacher.model';
-import { Student } from 'src/app/models/student.model';
-import { RatingService } from 'src/app/services/rating.service';
-import { TeacherService } from 'src/app/services/teacher.service';
-import { StudentService } from 'src/app/services/student.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { RatingFormDialogComponent } from '../rating-form-dialog/rating-form-dialog.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Rating } from '../../models/rating.model';
+import { Student } from '../../models/student.model';
+import { Teacher } from '../../models/teacher.model';
+import { AuthService } from '../../services/auth.service';
+import { RatingService } from '../../services/rating.service';
+import { StudentService } from '../../services/student.service';
+import { TeacherService } from '../../services/teacher.service';
 
 @Component({
   selector: 'app-ratings',

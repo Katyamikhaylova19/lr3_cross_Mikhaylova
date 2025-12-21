@@ -43,7 +43,6 @@ import { GroupService } from './services/group.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 // Components
-import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
@@ -61,6 +60,7 @@ import { RatingDetailComponent } from './components/rating-detail/rating-detail.
 // Guards
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { LoginComponent } from './components/login/login.component';
 
 // JWT токен функция
 export function tokenGetter() {

@@ -1,0 +1,162 @@
+/* Контейнер диалога */
+:host {
+  display: block;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+/* Заголовок */
+h2[mat-dialog-title] {
+  margin: 0;
+  padding: 20px 24px 10px 24px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #3f51b5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Содержимое диалога */
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Иконки */
+.warning-icon, .success-icon {
+  font-size: 60px;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.warning-icon {
+  color: #ff9800;
+}
+
+.success-icon {
+  color: #4caf50;
+}
+
+/* Сообщение */
+.message-container {
+  width: 100%;
+}
+
+.dialog-message {
+  margin: 0 0 15px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  padding: 0 20px;
+}
+
+/* Дополнительная информация */
+.additional-info {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.additional-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Действия */
+mat-dialog-actions {
+  padding: 10px 24px 20px 24px;
+  margin: 0;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Кнопки */
+.cancel-button {
+  margin-right: 10px;
+  padding: 8px 20px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.confirm-button {
+  padding: 8px 24px;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.confirm-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-button.danger {
+  background-color: #f44336;
+  color: white;
+}
+
+.confirm-button.danger:hover {
+  background-color: #d32f2f;
+}
+
+.confirm-button.primary {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.confirm-button.primary:hover {
+  background-color: #303f9f;
+}
+
+/* Анимации */
+:host {
+  animation: dialogAppear 0.3s ease-out;
+}
+
+@keyframes dialogAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  :host {
+    min-width: 280px;
+    max-width: 90vw;
+  }
+  
+  h2[mat-dialog-title] {
+    padding: 15px 20px 10px 20px;
+    font-size: 1.2rem;
+  }
+  
+  mat-dialog-actions {
+    padding: 10px 20px 15px 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .cancel-button, .confirm-button {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .dialog-message {
+    padding: 0 15px;
+    font-size: 0.95rem;
+  }
+}

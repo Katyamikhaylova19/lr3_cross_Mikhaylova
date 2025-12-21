@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Student } from 'src/app/models/student.model';
-import { StudentService } from 'src/app/services/student.service';
 import { ToastrService } from 'ngx-toastr';
+import { Student } from '../../models/student.model';
+import { StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-student-detail',

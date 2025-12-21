@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { MatToolbar } from "@angular/material/toolbar";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  imports: [MatToolbar, MatIcon]
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;

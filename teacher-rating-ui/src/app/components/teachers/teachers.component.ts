@@ -3,12 +3,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { Teacher } from 'src/app/models/teacher.model';
-import { TeacherService } from 'src/app/services/teacher.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { TeacherFormDialogComponent } from '../teacher-form-dialog/teacher-form-dialog.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Teacher } from '../../models/teacher.model';
+import { AuthService } from '../../services/auth.service';
+import { TeacherService } from '../../services/teacher.service';
+import { TeacherFormDialogComponent } from '../teacher-form-dialog/teacher-form-dialog.component';
 
 @Component({
   selector: 'app-teachers',

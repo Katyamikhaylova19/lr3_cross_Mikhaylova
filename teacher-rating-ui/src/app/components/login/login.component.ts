@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
+import { MatIcon } from "@angular/material/icon";
+import { MatDivider } from "@angular/material/divider";
+import { MatError, MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  imports: [MatIcon, MatDivider, MatError, MatFormField, MatLabel, MatProgressSpinner]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -49,7 +54,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/teachers']);
           }
         },
-        error: (error) => {
+        error: () => {
           this.toastr.error('Неверное имя пользователя или пароль');
           this.isLoading = false;
         },

@@ -3,14 +3,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { Student } from 'src/app/models/student.model';
-import { Group } from 'src/app/models/group.model';
-import { StudentService } from 'src/app/services/student.service';
-import { GroupService } from 'src/app/services/group.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { StudentFormDialogComponent } from '../student-form-dialog/student-form-dialog.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Group } from '../../models/group.model';
+import { Student } from '../../models/student.model';
+import { AuthService } from '../../services/auth.service';
+import { GroupService } from '../../services/group.service';
+import { StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-students',

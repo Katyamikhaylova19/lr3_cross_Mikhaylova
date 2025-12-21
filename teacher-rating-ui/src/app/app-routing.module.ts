@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { StudentsComponent } from './components/students/students.component';
-import { RatingsComponent } from './components/ratings/ratings.component';
-import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.guard';
 import { TeacherDetailComponent } from './components/teacher-detail/teacher-detail.component';
 import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 import { RatingDetailComponent } from './components/rating-detail/rating-detail.component';
+import { LoginComponent } from './components/login/login.component';
+import { RatingsComponent } from './components/ratings/ratings.component';
+import { AdminGuard } from './guards/admin.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/teachers', pathMatch: 'full' },

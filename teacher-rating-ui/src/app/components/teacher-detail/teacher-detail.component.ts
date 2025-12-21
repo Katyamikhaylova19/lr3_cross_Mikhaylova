@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Teacher } from 'src/app/models/teacher.model';
-import { TeacherService } from 'src/app/services/teacher.service';
-import { RatingService } from 'src/app/services/rating.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Teacher } from '../../models/teacher.model';
+import { AuthService } from '../../services/auth.service';
+import { RatingService } from '../../services/rating.service';
+import { TeacherService } from '../../services/teacher.service';
 
 @Component({
   selector: 'app-teacher-detail',
@@ -97,9 +97,9 @@ export class TeacherDetailComponent implements OnInit {
 
     this.isAddingRating = true;
     this.ratingService.createRating({
-      ...this.newRating,
-      studentId: 1, // Временное значение - в реальном приложении брать из токена
-      createdDate: new Date()
+        ...this.newRating,
+        studentId: 1, // Временное значение - в реальном приложении брать из токена
+        createdDate: new Date()
     }).subscribe({
       next: () => {
         this.toastr.success('Оценка успешно добавлена');
