@@ -39,6 +39,7 @@ import { AuthService } from './services/auth.service';
 import { TeacherService } from './services/teacher.service';
 import { StudentService } from './services/student.service';
 import { RatingService } from './services/rating.service';
+import { GroupService } from './services/group.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 // Components (будем добавлять по мере создания)
@@ -111,6 +112,7 @@ export function tokenGetter() {
     TeacherService,
     StudentService,
     RatingService,
+    GroupService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
