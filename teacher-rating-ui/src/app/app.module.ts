@@ -46,12 +46,16 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { TeacherFormDialogComponent } from './components/teachers-form-dialog/teachers-form-dialog.component';
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { TeacherDetailComponent } from './components/teacher-detail/teacher-detail.component';
 import { StudentsComponent } from './components/students/students.component';
+import { StudentFormDialogComponent } from './components/students-form-dialog/students-form-dialog.component';
+import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
+import { RatingFormDialogComponent } from './components/ratings-form-dialog/ratings-form-dialog.component';
+import { RatingDetailComponent } from './components/rating-detail/rating-detail.component';
 
 
 // Guards
@@ -69,12 +73,16 @@ export function tokenGetter() {
     LoginComponent,
     HeaderComponent,
     FooterComponent,
+    ConfirmDialogComponent,
     TeachersComponent,
     TeacherFormDialogComponent,
-    ConfirmDialogComponent,
-    TeacherDetailComponent,,
+    TeacherDetailComponent,
     StudentsComponent,
-    RatingsComponent
+    StudentFormDialogComponent,
+    StudentDetailComponent,
+    RatingsComponent,
+    RatingFormDialogComponent,
+    RatingDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,177 @@
+<div class="container" *ngIf="!isLoading; else loading">
+  <!-- Кнопка назад -->
+  <button mat-button routerLink="/students" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Назад к списку
+  </button>
+
+  <!-- Основная информация -->
+  <div class="student-header">
+    <div class="student-info">
+      <h1>{{getFullName()}}</h1>
+      <div class="student-id">ID: {{student?.id}}</div>
+      
+      <!-- Статистика -->
+      <div class="stats-section">
+        <div class="stat-item">
+          <mat-icon>group</mat-icon>
+          <span class="stat-label">Группа:</span>
+          <span class="stat-value">{{student?.group?.groupNumber || 'Не указана'}}</span>
+        </div>
+        
+        <div class="stat-item">
+          <mat-icon>rate_review</mat-icon>
+          <span class="stat-label">Оценок:</span>
+          <span class="stat-value">{{student?.ratings?.length || 0}}</span>
+        </div>
+        
+        <div class="stat-item" *ngIf="student?.ratings && student.ratings.length > 0">
+          <mat-icon>star</mat-icon>
+          <span class="stat-label">Средняя оценка:</span>
+          <span class="stat-value">{{getAverageRating().toFixed(1)}} / 5.0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Вкладки -->
+  <mat-tab-group [(selectedIndex)]="activeTab" animationDuration="0ms">
+    <!-- Основная информация -->
+    <mat-tab label="Информация">
+      <div class="tab-content">
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Общая информация</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Имя:</span>
+                <span class="info-value">{{student?.firstName}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Фамилия:</span>
+                <span class="info-value">{{student?.lastName}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Отчество:</span>
+                <span class="info-value">{{student?.middleName || 'Не указано'}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Группа:</span>
+                <span class="info-value">{{student?.group?.groupNumber || 'Не указана'}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">ID:</span>
+                <span class="info-value">{{student?.id}}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Оценки студента -->
+    <mat-tab label="Оценки">
+      <div class="tab-content">
+        <!-- Список оценок -->
+        <div class="ratings-list" *ngIf="student?.ratings && student.ratings.length > 0; else noRatings">
+          <h3>Оценки студента ({{student?.ratings?.length}})</h3>
+          <div class="ratings-container">
+            <mat-card *ngFor="let rating of student?.ratings" class="rating-card">
+              <mat-card-header>
+                <mat-card-title>
+                  <div class="rating-header">
+                    <div class="rating-stars-small">
+                      <span *ngFor="let star of [1,2,3,4,5]" 
+                            [class.filled]="star <= rating.score"
+                            class="star">★</span>
+                    </div>
+                    <span class="rating-score-value">{{rating.score}} / 5</span>
+                  </div>
+                </mat-card-title>
+                <mat-card-subtitle>
+                  <div class="rating-meta">
+                    <span class="teacher-name">
+                      <mat-icon>person</mat-icon>
+                      {{rating.teacher?.lastName}} {{rating.teacher?.firstName}}
+                    </span>
+                    <span class="date">
+                      <mat-icon>calendar_today</mat-icon>
+                      {{rating.createdDate | date:'dd.MM.yyyy HH:mm'}}
+                    </span>
+                  </div>
+                </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content *ngIf="rating.review">
+                <p class="review-text">{{rating.review}}</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <ng-template #noRatings>
+          <div class="no-ratings">
+            <mat-icon>sentiment_dissatisfied</mat-icon>
+            <h3>Студент еще не оставил оценок</h3>
+            <p>Как только студент оставит оценку преподавателю, она появится здесь</p>
+          </div>
+        </ng-template>
+      </div>
+    </mat-tab>
+
+    <!-- Отчет -->
+    <mat-tab label="Отчет">
+      <div class="tab-content">
+        <div class="report-container" *ngIf="ratingsReport.length > 0; else noReport">
+          <mat-card class="report-card">
+            <mat-card-header>
+              <mat-card-title>Отчет по оценкам</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="report-items">
+                <div *ngFor="let item of ratingsReport; let i = index" class="report-item">
+                  <div class="report-header">
+                    <h4>Оценка {{i + 1}}</h4>
+                  </div>
+                  <div class="report-details">
+                    <div class="detail-item">
+                      <span class="detail-label">Преподаватель:</span>
+                      <span class="detail-value">{{item.Teacher}}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">Оценка:</span>
+                      <span class="detail-value">{{item.Score}} / 5</span>
+                    </div>
+                    <div class="detail-item" *ngIf="item.Review">
+                      <span class="detail-label">Отзыв:</span>
+                      <span class="detail-value">{{item.Review}}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">Дата:</span>
+                      <span class="detail-value">{{item.CreatedDate | date:'dd.MM.yyyy HH:mm'}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <ng-template #noReport>
+          <div class="no-report">
+            <mat-icon>description</mat-icon>
+            <h3>Отчет пока недоступен</h3>
+            <p>Нет данных для формирования отчета</p>
+          </div>
+        </ng-template>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Загрузка данных студента...</p>
+  </div>
+</ng-template>

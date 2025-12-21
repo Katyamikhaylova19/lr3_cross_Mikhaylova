@@ -1,0 +1,156 @@
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Логотип */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+
+.logo-section:hover {
+  opacity: 0.8;
+}
+
+.logo-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Навигация */
+.nav-section {
+  display: flex;
+  gap: 8px;
+  margin: 0 20px;
+}
+
+.nav-section button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 56px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nav-section button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-section button.active-link {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-text {
+  font-size: 0.9rem;
+}
+
+/* Пользовательская секция */
+.user-section {
+  display: flex;
+  align-items: center;
+}
+
+.guest-section button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logged-in-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.username {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-bottom: 2px;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  min-width: auto;
+  height: 28px;
+  font-size: 0.75rem;
+  line-height: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.logout-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .logo-text, .nav-text {
+    display: none;
+  }
+  
+  .nav-section button {
+    padding: 0 12px;
+  }
+  
+  .nav-section button mat-icon,
+  .guest-section button mat-icon,
+  .logout-button mat-icon {
+    margin-right: 0;
+  }
+  
+  .user-info {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-section {
+    gap: 8px;
+  }
+  
+  .logo-icon {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+  }
+  
+  .nav-section {
+    gap: 4px;
+  }
+  
+  .nav-section button {
+    padding: 0 8px;
+  }
+}

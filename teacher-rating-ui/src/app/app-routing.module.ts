@@ -7,6 +7,8 @@ import { RatingsComponent } from './components/ratings/ratings.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { TeacherDetailComponent } from './components/teacher-detail/teacher-detail.component';
+import { StudentDetailComponent } from './components/student-detail/student-detail.component';
+import { RatingDetailComponent } from './components/rating-detail/rating-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/teachers', pathMatch: 'full' },
@@ -27,6 +29,8 @@ const routes: Routes = [
     component: RatingsComponent, 
     canActivate: [AuthGuard] 
   },
+  { path: 'students/:id', component: StudentDetailComponent },
+  { path: 'ratings/:id', component: RatingDetailComponent },
   
   // Маршрут для админов
   { 

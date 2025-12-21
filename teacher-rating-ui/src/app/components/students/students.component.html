@@ -1,5 +1,209 @@
 <div class="container">
-  <h1>Студенты</h1>
-  <p>Компонент студентов - в разработке</p>
-  <p>Здесь будет отображение, добавление, редактирование студентов</p>
+  <!-- Заголовок и статистика -->
+  <div class="header-section">
+    <h1>Студенты</h1>
+    
+    <div class="stats-container">
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-number">{{stats.total}}</div>
+          <div class="stat-label">Всего студентов</div>
+        </mat-card-content>
+      </mat-card>
+      
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-number">{{stats.withRatings}}</div>
+          <div class="stat-label">С оценками</div>
+        </mat-card-content>
+      </mat-card>
+      
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-number">{{stats.averageRatings.toFixed(1)}}</div>
+          <div class="stat-label">Среднее оценок</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Панель управления -->
+  <div class="control-panel">
+    <!-- Поиск -->
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Поиск студентов</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" placeholder="Введите ФИО">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Фильтр по группе -->
+    <mat-form-field appearance="outline" class="group-filter">
+      <mat-label>Фильтр по группе</mat-label>
+      <mat-select [(ngModel)]="selectedGroupId" (selectionChange)="filterByGroup()">
+        <mat-option [value]="null">Все группы</mat-option>
+        <mat-option *ngFor="let group of groups" [value]="group.id">
+          {{group.groupNumber}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Переключение вида -->
+    <div class="view-toggle">
+      <button mat-stroked-button 
+              [class.active]="viewMode === 'table'"
+              (click)="toggleViewMode('table')">
+        <mat-icon>table_chart</mat-icon> Таблица
+      </button>
+      <button mat-stroked-button 
+              [class.active]="viewMode === 'cards'"
+              (click)="toggleViewMode('cards')">
+        <mat-icon>grid_view</mat-icon> Карточки
+      </button>
+    </div>
+
+    <!-- Кнопки -->
+    <div class="action-buttons">
+      <button mat-stroked-button color="warn" (click)="resetFilters()">
+        <mat-icon>clear_all</mat-icon> Сбросить
+      </button>
+      
+      <button mat-raised-button color="primary" 
+              *ngIf="isAdmin()"
+              (click)="openCreateDialog()">
+        <mat-icon>add</mat-icon> Добавить студента
+      </button>
+    </div>
+  </div>
+
+  <!-- Индикатор загрузки -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Табличное представление -->
+  <div *ngIf="!isLoading && viewMode === 'table'" class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let student">{{student.id}}</td>
+      </ng-container>
+
+      <!-- ФИО Column -->
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ФИО</th>
+        <td mat-cell *matCellDef="let student">
+          <div class="student-name">
+            <mat-icon>person</mat-icon>
+            <span>{{getFullName(student)}}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Группа Column -->
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Группа</th>
+        <td mat-cell *matCellDef="let student">
+          <div class="group-cell">
+            <mat-icon>group</mat-icon>
+            <span>{{getGroupNumber(student)}}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Оценки Column -->
+      <ng-container matColumnDef="ratingsCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Оценки</th>
+        <td mat-cell *matCellDef="let student">
+          <div class="ratings-cell">
+            <mat-icon>rate_review</mat-icon>
+            <span>{{student.ratings?.length || 0}}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Действия Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Действия</th>
+        <td mat-cell *matCellDef="let student">
+          <div class="action-buttons-small">
+            <button mat-icon-button color="primary" 
+                    [routerLink]="['/students', student.id]"
+                    matTooltip="Просмотр">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            
+            <button mat-icon-button color="accent" 
+                    *ngIf="isAdmin()"
+                    (click)="openEditDialog(student)"
+                    matTooltip="Редактировать">
+              <mat-icon>edit</mat-icon>
+            </button>
+            
+            <button mat-icon-button color="warn" 
+                    *ngIf="isAdmin()"
+                    (click)="deleteStudent(student)"
+                    matTooltip="Удалить">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Пагинатор -->
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <!-- Представление карточками -->
+  <div *ngIf="!isLoading && viewMode === 'cards'" class="cards-container">
+    <div class="cards-grid">
+      <mat-card *ngFor="let student of dataSource.filteredData" class="student-card">
+        <mat-card-header>
+          <mat-card-title>{{getFullName(student)}}</mat-card-title>
+          <mat-card-subtitle>ID: {{student.id}}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="card-info">
+            <div class="info-item">
+              <mat-icon>group</mat-icon>
+              <span>{{getGroupNumber(student)}}</span>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon>rate_review</mat-icon>
+              <span>{{student.ratings?.length || 0}} оценок</span>
+            </div>
+            
+            <div class="info-item" *ngIf="student.ratings && student.ratings.length > 0">
+              <mat-icon>star</mat-icon>
+              <span>Средняя оценка: {{getAverageRating(student)}}</span>
+            </div>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions align="end">
+          <button mat-button color="primary" [routerLink]="['/students', student.id]">
+            <mat-icon>visibility</mat-icon> Подробнее
+          </button>
+          <button mat-button color="accent" 
+                  *ngIf="isAdmin()"
+                  (click)="openEditDialog(student)">
+            <mat-icon>edit</mat-icon> Редактировать
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Сообщение при отсутствии данных -->
+  <div *ngIf="!isLoading && dataSource.filteredData.length === 0" class="no-data">
+    <mat-icon>search_off</mat-icon>
+    <h3>Студенты не найдены</h3>
+    <p>Попробуйте изменить условия поиска</p>
+  </div>
 </div>

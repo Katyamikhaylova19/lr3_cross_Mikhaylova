@@ -1,0 +1,144 @@
+<div class="container" *ngIf="!isLoading; else loading">
+  <!-- Кнопка назад -->
+  <button mat-button routerLink="/ratings" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Назад к списку
+  </button>
+
+  <!-- Основная информация -->
+  <div class="rating-header">
+    <div class="rating-info">
+      <h1>Оценка #{{rating?.id}}</h1>
+      
+      <!-- Оценка -->
+      <div class="score-section">
+        <div class="score-display">
+          <div class="stars-large">
+            <span *ngFor="let filled of getStarArray(rating?.score || 0); let i = index" 
+                  [class.filled]="filled === 1"
+                  class="star">★</span>
+          </div>
+          <div class="score-value-large">{{rating?.score}} / 5.0</div>
+        </div>
+        
+        <div class="rating-meta-large">
+          <div class="meta-item">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{getFormattedDate(rating?.createdDate || new Date())}}</span>
+          </div>
+          <div class="meta-item">
+            <mat-icon>visibility</mat-icon>
+            <span>{{rating?.isAnonymous ? 'Анонимная оценка' : 'Именная оценка'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Карточки с информацией -->
+  <div class="info-cards">
+    <!-- Карточка преподавателя -->
+    <mat-card class="info-card teacher-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>person</mat-icon>
+          Преподаватель
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="person-info">
+          <h3>{{rating?.teacher?.lastName}} {{rating?.teacher?.firstName}}</h3>
+          <div class="person-details">
+            <div class="detail-item">
+              <span class="detail-label">ID:</span>
+              <span class="detail-value">{{rating?.teacher?.id}}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">ФИО:</span>
+              <span class="detail-value">{{rating?.teacher?.lastName}} {{rating?.teacher?.firstName}} {{rating?.teacher?.middleName || ''}}</span>
+            </div>
+            <button mat-button color="primary" 
+                    [routerLink]="['/teachers', rating?.teacherId]"
+                    class="view-button">
+              <mat-icon>visibility</mat-icon>
+              Перейти к преподавателю
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Карточка студента -->
+    <mat-card class="info-card student-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>school</mat-icon>
+          Студент
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="person-info">
+          <h3 *ngIf="!rating?.isAnonymous; else anonymous">
+            {{rating?.student?.lastName}} {{rating?.student?.firstName}}
+          </h3>
+          <ng-template #anonymous>
+            <h3>Анонимный студент</h3>
+          </ng-template>
+          
+          <div class="person-details" *ngIf="!rating?.isAnonymous">
+            <div class="detail-item">
+              <span class="detail-label">ID:</span>
+              <span class="detail-value">{{rating?.student?.id}}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">ФИО:</span>
+              <span class="detail-value">{{rating?.student?.lastName}} {{rating?.student?.firstName}} {{rating?.student?.middleName || ''}}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Группа:</span>
+              <span class="detail-value">{{rating?.student?.group?.groupNumber || 'Не указана'}}</span>
+            </div>
+            <button mat-button color="accent" 
+                    [routerLink]="['/students', rating?.studentId]"
+                    class="view-button">
+              <mat-icon>visibility</mat-icon>
+              Перейти к студенту
+            </button>
+          </div>
+          
+          <div class="person-details" *ngIf="rating?.isAnonymous">
+            <p class="anonymous-note">Студент предпочел остаться анонимным</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Отзыв -->
+  <mat-card class="review-card" *ngIf="rating?.review">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>rate_review</mat-icon>
+        Отзыв
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="review-content">
+        <p>{{rating?.review}}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Нет отзыва -->
+  <div *ngIf="!rating?.review" class="no-review">
+    <mat-icon>chat_bubble_outline</mat-icon>
+    <h3>Отзыв не оставлен</h3>
+    <p>Студент не оставил отзыв к этой оценке</p>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Загрузка данных оценки...</p>
+  </div>
+</ng-template>

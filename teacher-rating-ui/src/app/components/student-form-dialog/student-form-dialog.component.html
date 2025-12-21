@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>{{title}}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="studentForm" class="form-container">
+    <!-- Имя -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Имя</mat-label>
+      <input matInput formControlName="firstName" placeholder="Введите имя">
+      <mat-error *ngIf="studentForm.get('firstName')?.hasError('required')">
+        Имя обязательно
+      </mat-error>
+      <mat-error *ngIf="studentForm.get('firstName')?.hasError('maxlength')">
+        Максимум 100 символов
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Фамилия -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Фамилия</mat-label>
+      <input matInput formControlName="lastName" placeholder="Введите фамилию">
+      <mat-error *ngIf="studentForm.get('lastName')?.hasError('required')">
+        Фамилия обязательна
+      </mat-error>
+      <mat-error *ngIf="studentForm.get('lastName')?.hasError('maxlength')">
+        Максимум 100 символов
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Отчество -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Отчество (необязательно)</mat-label>
+      <input matInput formControlName="middleName" placeholder="Введите отчество">
+      <mat-error *ngIf="studentForm.get('middleName')?.hasError('maxlength')">
+        Максимум 100 символов
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Группа -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Группа</mat-label>
+      <mat-select formControlName="groupId">
+        <mat-option *ngFor="let group of groups" [value]="group.id">
+          {{group.groupNumber}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="studentForm.get('groupId')?.hasError('required')">
+        Группа обязательна
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Отмена</button>
+  <button mat-raised-button color="primary" 
+          (click)="onSubmit()"
+          [disabled]="studentForm.invalid">
+    {{isEditMode ? 'Сохранить' : 'Добавить'}}
+  </button>
+</mat-dialog-actions>
