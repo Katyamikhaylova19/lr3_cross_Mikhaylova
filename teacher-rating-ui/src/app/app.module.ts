@@ -50,6 +50,10 @@ import { TeachersComponent } from './components/teachers/teachers.component';
 import { TeacherFormDialogComponent } from './components/teachers-form-dialog/teachers-form-dialog.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
+// Guards
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+
 // JWT токен функция
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -121,7 +125,9 @@ export function tokenGetter() {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    AuthGuard,
+    AdminGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,80 @@
+<div class="login-container">
+  <div class="login-card mat-elevation-z8">
+    <!-- Заголовок -->
+    <div class="login-header">
+      <mat-icon class="login-icon">school</mat-icon>
+      <h2>Рейтинг преподавателей</h2>
+      <p>Войдите в систему для доступа к функциям приложения</p>
+    </div>
+
+    <!-- Форма входа -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Имя пользователя -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Имя пользователя</mat-label>
+        <input matInput formControlName="username" placeholder="Введите имя пользователя">
+        <mat-icon matSuffix>person</mat-icon>
+        
+        <mat-error *ngIf="username?.hasError('required')">
+          Имя пользователя обязательно
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Пароль -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Пароль</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" 
+               formControlName="password" placeholder="Введите пароль">
+        <button mat-icon-button matSuffix type="button" 
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="'Hide password'" 
+                [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-icon matPrefix>lock</mat-icon>
+        
+        <mat-error *ngIf="password?.hasError('required')">
+          Пароль обязателен
+        </mat-error>
+        <mat-error *ngIf="password?.hasError('minlength')">
+          Минимум 6 символов
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Кнопка входа -->
+      <button mat-raised-button color="primary" type="submit" 
+              class="login-button full-width"
+              [disabled]="isLoading || loginForm.invalid">
+        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+        <span *ngIf="!isLoading">Войти</span>
+      </button>
+    </form>
+
+    <!-- Быстрый вход для демо -->
+    <div class="demo-login">
+      <p class="demo-text">Для демонстрации:</p>
+      <div class="demo-buttons">
+        <button mat-stroked-button color="primary" 
+                (click)="quickLogin('user')" 
+                class="demo-button">
+          <mat-icon>person</mat-icon> Войти как User
+        </button>
+        <button mat-stroked-button color="accent" 
+                (click)="quickLogin('admin')" 
+                class="demo-button">
+          <mat-icon>admin_panel_settings</mat-icon> Войти как Admin
+        </button>
+      </div>
+    </div>
+
+    <!-- Информация -->
+    <div class="login-info">
+      <mat-divider></mat-divider>
+      <p class="info-text">
+        <mat-icon>info</mat-icon>
+        User: доступ к просмотру отчетов<br>
+        Admin: полный доступ к CRUD операциям
+      </p>
+    </div>
+  </div>
+</div>
