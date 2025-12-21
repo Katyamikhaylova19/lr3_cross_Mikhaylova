@@ -42,11 +42,13 @@ import { RatingService } from './services/rating.service';
 import { GroupService } from './services/group.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
-// Components (будем добавлять по мере создания)
+// Components
 import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
+import { TeacherFormDialogComponent } from './components/teachers-form-dialog/teachers-form-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 // JWT токен функция
 export function tokenGetter() {
@@ -59,7 +61,9 @@ export function tokenGetter() {
     LoginComponent,
     HeaderComponent,
     FooterComponent,
-    TeachersComponent
+    TeachersComponent,
+    TeacherFormDialogComponent
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
