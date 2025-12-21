@@ -6,6 +6,7 @@ import { StudentsComponent } from './components/students/students.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { TeacherDetailComponent } from './components/teacher-detail/teacher-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/teachers', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   
   // Публичные маршруты
   { path: 'teachers', component: TeachersComponent },
+  { path: 'teachers/:id', component: TeacherDetailComponent },
   
   // Защищенные маршруты (требуют авторизации)
   { 

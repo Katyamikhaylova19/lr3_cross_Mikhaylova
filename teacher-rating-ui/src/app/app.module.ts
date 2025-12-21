@@ -49,6 +49,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { TeacherFormDialogComponent } from './components/teachers-form-dialog/teachers-form-dialog.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { TeacherDetailComponent } from './components/teacher-detail/teacher-detail.component';
+import { StudentsComponent } from './components/students/students.component';
+import { RatingsComponent } from './components/ratings/ratings.component';
+
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
@@ -66,8 +70,11 @@ export function tokenGetter() {
     HeaderComponent,
     FooterComponent,
     TeachersComponent,
-    TeacherFormDialogComponent
-    ConfirmDialogComponent
+    TeacherFormDialogComponent,
+    ConfirmDialogComponent,
+    TeacherDetailComponent,,
+    StudentsComponent,
+    RatingsComponent
   ],
   imports: [
     BrowserModule,

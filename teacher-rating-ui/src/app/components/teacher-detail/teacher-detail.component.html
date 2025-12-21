@@ -1,0 +1,199 @@
+<div class="container" *ngIf="!isLoading; else loading">
+  <!-- Кнопка назад -->
+  <button mat-button routerLink="/teachers" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Назад к списку
+  </button>
+
+  <!-- Основная информация -->
+  <div class="teacher-header">
+    <div class="teacher-info">
+      <h1>{{getFullName()}}</h1>
+      <div class="teacher-id">ID: {{teacher?.id}}</div>
+      
+      <!-- Рейтинг -->
+      <div class="rating-section">
+        <div class="rating-display">
+          <div class="stars-large">
+            <span *ngFor="let filled of getStarArray(); let i = index" 
+                  [class.filled]="filled === 1"
+                  class="star">★</span>
+          </div>
+          <div class="rating-value-large">{{getAverageRating().toFixed(1)}} / 5.0</div>
+        </div>
+        <div class="rating-stats">
+          <span><mat-icon>rate_review</mat-icon> {{teacher?.ratings?.length || 0}} оценок</span>
+          <span><mat-icon>groups</mat-icon> {{getTeachingGroups().join(', ') || 'Не указаны'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Вкладки -->
+  <mat-tab-group [(selectedIndex)]="activeTab" animationDuration="0ms">
+    <!-- Основная информация -->
+    <mat-tab label="Информация">
+      <div class="tab-content">
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Общая информация</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Имя:</span>
+                <span class="info-value">{{teacher?.firstName}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Фамилия:</span>
+                <span class="info-value">{{teacher?.lastName}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Отчество:</span>
+                <span class="info-value">{{teacher?.middleName || 'Не указано'}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Средний рейтинг:</span>
+                <span class="info-value">{{getAverageRating().toFixed(1)}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Количество оценок:</span>
+                <span class="info-value">{{teacher?.ratings?.length || 0}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Группы:</span>
+                <span class="info-value">{{getTeachingGroups().join(', ') || 'Не указаны'}}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Оценки -->
+    <mat-tab label="Оценки">
+      <div class="tab-content">
+        <!-- Форма добавления оценки -->
+        <mat-card *ngIf="canAddRating()" class="add-rating-card">
+          <mat-card-header>
+            <mat-card-title>Добавить оценку</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="rating-form">
+              <!-- Оценка -->
+              <div class="rating-score">
+                <label>Оценка:</label>
+                <div class="stars-selector">
+                  <button mat-icon-button *ngFor="let score of [1,2,3,4,5]" 
+                          (click)="newRating.score = score"
+                          [class.selected]="newRating.score === score">
+                    <mat-icon [style.color]="score <= newRating.score ? '#ffc107' : '#ddd'">star</mat-icon>
+                  </button>
+                </div>
+                <span class="score-value">{{newRating.score}} / 5</span>
+              </div>
+
+              <!-- Отзыв -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Отзыв (необязательно)</mat-label>
+                <textarea matInput [(ngModel)]="newRating.review" 
+                          rows="3" placeholder="Ваш отзыв о преподавателе..."></textarea>
+              </mat-form-field>
+
+              <!-- Анонимность -->
+              <mat-checkbox [(ngModel)]="newRating.isAnonymous" class="anonymous-checkbox">
+                Оставить анонимный отзыв
+              </mat-checkbox>
+
+              <!-- Кнопка отправки -->
+              <button mat-raised-button color="primary" 
+                      (click)="addRating()"
+                      [disabled]="isAddingRating"
+                      class="submit-rating-button">
+                <mat-spinner diameter="20" *ngIf="isAddingRating"></mat-spinner>
+                <span *ngIf="!isAddingRating">Добавить оценку</span>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Список оценок -->
+        <div class="ratings-list" *ngIf="teacher?.ratings && teacher.ratings.length > 0; else noRatings">
+          <h3>Все оценки ({{teacher?.ratings?.length}})</h3>
+          <div class="ratings-container">
+            <mat-card *ngFor="let rating of teacher?.ratings" class="rating-card">
+              <mat-card-header>
+                <mat-card-title>
+                  <div class="rating-header">
+                    <div class="rating-stars-small">
+                      <span *ngFor="let star of [1,2,3,4,5]" 
+                            [class.filled]="star <= rating.score"
+                            class="star">★</span>
+                    </div>
+                    <span class="rating-score-value">{{rating.score}} / 5</span>
+                  </div>
+                </mat-card-title>
+                <mat-card-subtitle>
+                  <div class="rating-meta">
+                    <span class="author">
+                      <mat-icon>person</mat-icon>
+                      {{rating.isAnonymous ? 'Аноним' : (rating.student?.firstName + ' ' + rating.student?.lastName)}}
+                    </span>
+                    <span class="date">
+                      <mat-icon>calendar_today</mat-icon>
+                      {{rating.createdDate | date:'dd.MM.yyyy HH:mm'}}
+                    </span>
+                  </div>
+                </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content *ngIf="rating.review">
+                <p class="review-text">{{rating.review}}</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <ng-template #noRatings>
+          <div class="no-ratings">
+            <mat-icon>sentiment_dissatisfied</mat-icon>
+            <h3>Пока нет оценок</h3>
+            <p>Будьте первым, кто оценит этого преподавателя</p>
+          </div>
+        </ng-template>
+      </div>
+    </mat-tab>
+
+    <!-- Статистика -->
+    <mat-tab label="Статистика">
+      <div class="tab-content">
+        <div class="statistics-grid">
+          <mat-card class="stat-card">
+            <mat-card-header>
+              <mat-card-title>Общая статистика</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div *ngIf="detailedReport.length > 0; else loadingStats">
+                <div *ngFor="let stat of detailedReport[0] | keyvalue" class="stat-item">
+                  <span class="stat-label">{{getStatLabel(stat.key)}}:</span>
+                  <span class="stat-value">{{stat.value}}</span>
+                </div>
+              </div>
+              <ng-template #loadingStats>
+                <div class="loading-stats">
+                  <mat-spinner diameter="30"></mat-spinner>
+                  <p>Загрузка статистики...</p>
+                </div>
+              </ng-template>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Загрузка данных преподавателя...</p>
+  </div>
+</ng-template>
