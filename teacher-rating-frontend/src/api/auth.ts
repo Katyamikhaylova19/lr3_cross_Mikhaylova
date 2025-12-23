@@ -8,6 +8,8 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Для отправки куки/авторизации
+  timeout: 10000,
 });
 
 // Интерцептор для добавления токена к каждому запросу
@@ -39,8 +41,15 @@ api.interceptors.response.use(
 
 export const authApi = {
   login: async (credentials: LoginRequest): Promise<string> => {
-    const response = await api.post('/auth/login', credentials);
-    return response.data;
+    try {
+      const response = await api.post('/auth/login', credentials);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === 'ERR_NETWORK') {
+        throw new Error('Не удалось подключиться к серверу. Проверьте, запущен ли сервер и настройки CORS.');
+      }
+      throw error;
+    }
   },
 
   logout: () => {
